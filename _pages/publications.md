@@ -8,6 +8,7 @@ nav_order: 2
 ---
 
 <!-- _pages/publications.md -->
+Work in progess!
 <div class="publications">
 
 {% bibliography %}
