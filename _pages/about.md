@@ -19,3 +19,5 @@ I am a PhD student in the [International Max Planck Research School for Intellig
 I am interested in theoretical aspects of Reinforcement Learning (RL) and Inverse Reinforcement Learning (IRL).
 
 Before coming to Tübingen, I completed my bachelor's and master's degrees in mathematics at the Sapienza University of Rome.
+
+I am also part of the organization of [Tübingen Women in Machine Learning](https://tuewiml.github.io). 
