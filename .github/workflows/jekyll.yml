@@ -28,12 +28,15 @@ concurrency:
 
 jobs:
   # Build job
+  
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest  # Usa un runner GitHub-hosted
+
     steps:
-      - name: Checkout
+      - name: Checkout del codice
         uses: actions/checkout@v3
-      - name: Install Ruby using rbenv
+
+      - name: Installa Ruby usando rbenv
         run: |
           sudo apt update
           sudo apt install -y rbenv
@@ -42,22 +45,52 @@ jobs:
           eval "$(rbenv init -)"
           rbenv install 3.1.4
           rbenv global 3.1.4
-          ruby -v  # Check installed version
-      # - name: Setup Ruby
-      #   uses: ruby/setup-ruby@8575951200e472d5f2d95c625da0c7bec8217c42 # v1.161.0
-      #   with:
-      #     ruby-version: '3.1' # Not needed with a .ruby-version file
-      #     bundler-cache: true # runs 'bundle install' and caches installed gems automatically
-      #     cache-version: 0 # Increment this number if you need to re-download cached gems
+          echo 'export PATH="$HOME/.rbenv/bin:$HOME/.rbenv/shims:$PATH"' >> $HOME/.bashrc
+          source $HOME/.bashrc
+          ruby -v  # Verifica la versione installata
 
-      - name: Install Bundler
-        run: gem install bundler --user-install
-              echo 'export PATH="$HOME/.gem/ruby/$(ruby -e "print RUBY_VERSION")/bin:$PATH"' >> $HOME/.bashrc
-              source $HOME/.bashrc
-      - name: Run your Ruby commands
+      - name: Installa Bundler
         run: |
-          bundle install
-          rake test  
+          gem install bundler
+          echo 'export PATH="$HOME/.local/share/gem/ruby/$(ruby -e "print RUBY_VERSION")/bin:$PATH"' >> $HOME/.bashrc
+          source $HOME/.bashrc
+
+      - name: Installa dipendenze del progetto
+        run: bundle install --path vendor/bundle
+
+      - name: Esegui i test (se applicabile)
+        run: rake test  # Modifica in base al tuo progetto
+
+  # build:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Checkout
+  #       uses: actions/checkout@v3
+  #     - name: Install Ruby using rbenv
+  #       run: |
+  #         sudo apt update
+  #         sudo apt install -y rbenv
+  #         git clone https://github.com/rbenv/ruby-build.git "$(rbenv root)"/plugins/ruby-build
+  #         export PATH="$HOME/.rbenv/bin:$PATH"
+  #         eval "$(rbenv init -)"
+  #         rbenv install 3.1.4
+  #         rbenv global 3.1.4
+  #         ruby -v  # Check installed version
+  #     # - name: Setup Ruby
+  #     #   uses: ruby/setup-ruby@8575951200e472d5f2d95c625da0c7bec8217c42 # v1.161.0
+  #     #   with:
+  #     #     ruby-version: '3.1' # Not needed with a .ruby-version file
+  #     #     bundler-cache: true # runs 'bundle install' and caches installed gems automatically
+  #     #     cache-version: 0 # Increment this number if you need to re-download cached gems
+
+  #     - name: Install Bundler
+  #       run: gem install bundler --user-install
+  #             echo 'export PATH="$HOME/.gem/ruby/$(ruby -e "print RUBY_VERSION")/bin:$PATH"' >> $HOME/.bashrc
+  #             source $HOME/.bashrc
+  #     - name: Run your Ruby commands
+  #       run: |
+  #         bundle install
+  #         rake test  
       - name: Setup Pages
         id: pages
         uses: actions/configure-pages@v4
