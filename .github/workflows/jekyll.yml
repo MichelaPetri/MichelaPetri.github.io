@@ -51,7 +51,9 @@ jobs:
       #     cache-version: 0 # Increment this number if you need to re-download cached gems
 
       - name: Install Bundler
-        run: gem install bundler
+        run: gem install bundler --user-install
+              echo 'export PATH="$HOME/.gem/ruby/$(ruby -e "print RUBY_VERSION")/bin:$PATH"' >> $HOME/.bashrc
+              source $HOME/.bashrc
       - name: Run your Ruby commands
         run: |
           bundle install
