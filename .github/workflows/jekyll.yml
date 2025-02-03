@@ -30,36 +30,34 @@ jobs:
   # Build job
   
   build:
-    runs-on: ubuntu-latest  # Usa un runner GitHub-hosted
+    runs-on: ubuntu-latest  # Usa un runner ufficiale di GitHub
 
     steps:
       - name: Checkout del codice
         uses: actions/checkout@v3
 
-      - name: Installa Ruby usando rbenv
+      - name: Imposta Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 3.1.4  # Specifica la versione di Ruby che ti serve
+          bundler-cache: true   # Installa automaticamente Bundler e le gemme
+      - name: Configura percorso delle gemme per evitare problemi di permessi
         run: |
-          sudo apt update
-          sudo apt install -y rbenv
-          git clone https://github.com/rbenv/ruby-build.git "$(rbenv root)"/plugins/ruby-build
-          export PATH="$HOME/.rbenv/bin:$PATH"
-          eval "$(rbenv init -)"
-          rbenv install 3.1.4
-          rbenv global 3.1.4
-          echo 'export PATH="$HOME/.rbenv/bin:$HOME/.rbenv/shims:$PATH"' >> $HOME/.bashrc
-          source $HOME/.bashrc
-          ruby -v  # Verifica la versione installata
-
-      - name: Installa Bundler
-        run: |
-          gem install bundler
-          echo 'export PATH="$HOME/.local/share/gem/ruby/$(ruby -e "print RUBY_VERSION")/bin:$PATH"' >> $HOME/.bashrc
+          echo 'export GEM_HOME="$HOME/.gem"' >> $HOME/.bashrc
+          echo 'export PATH="$HOME/.gem/bin:$PATH"' >> $HOME/.bashrc
           source $HOME/.bashrc
 
-      - name: Installa dipendenze del progetto
+      - name: Verifica la versione di Ruby e Bundler
+        run: |
+          ruby -v
+          gem env home 
+          bundle -v
+
+      - name: Installa dipendenze
         run: bundle install --path vendor/bundle
 
-      - name: Esegui i test (se applicabile)
-        run: rake test  # Modifica in base al tuo progetto
+      # - name: Esegui i test (se necessario)
+      #   run: rake test
 
   # build:
   #   runs-on: ubuntu-latest
