@@ -6,7 +6,7 @@ subtitle: Tübingen, Germany
 
 profile:
   align: right
-  image: michela_2.JPG
+  image: michela_3.jpeg
   image_circular: false # crops the image to make it circular
   more_info: 
 
