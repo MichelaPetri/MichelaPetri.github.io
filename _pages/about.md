@@ -6,11 +6,12 @@ subtitle: Tübingen, Germany
 
 profile:
   align: right
-  image: michela_3.jpeg
+  image: michela_4.jpg
   image_circular: false # crops the image to make it circular
   more_info: 
 
 news: true # includes a list of news items
+talks: true # includes a list of selected talks
 selected_papers: false # includes a list of papers marked as "selected={true}"
 social: true # includes social icons at the bottom of the page
 ---
